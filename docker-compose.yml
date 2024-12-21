@@ -1,0 +1,17 @@
+services:
+    app:
+        container_name: app
+        tty: true
+        build:
+            context: .
+            dockerfile: .docker/node/Dockerfile
+        #command: ["npm", "run", "start:dev"]
+        volumes:
+            - ./:/app
+            - /app/node_modules
+        ports:
+            - "8888:8888"
+        env_file:
+            - .env
+        environment:
+            - NODE_ENV=development
