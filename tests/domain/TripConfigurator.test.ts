@@ -69,7 +69,7 @@ describe('TripConfigurator', () => {
 
         it('should return error status when trip client fails', async () => {
             const result = await tripConfigurator.getTrips(
-                'ERROR',
+                'ERR',
                 'LHR',
                 'fastest',
             )
@@ -77,7 +77,7 @@ describe('TripConfigurator', () => {
             expect(result).toEqual({
                 status: 400,
                 data: [],
-                message: 'Invalid origin IATA code: ERROR',
+                message: 'Error getting trips',
             })
         })
 

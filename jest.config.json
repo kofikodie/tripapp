@@ -3,7 +3,7 @@
     "rootDir": ".",
     "verbose": true,
     "clearMocks": true,
-    "collectCoverage": false,
+    "collectCoverage": true,
     "coveragePathIgnorePatterns": [],
     "modulePathIgnorePatterns": ["./dist", "./node_modules"],
     "transform": {
