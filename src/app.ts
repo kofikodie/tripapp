@@ -14,7 +14,7 @@ app.get('/health', (req: Request, res: Response) => {
 
 app.get(
     '/trips',
-    async (req: Request<{}, {}, {}, TripsParamsInterface>, res: Response) => {
+    async (req: Request<unknown, unknown, unknown, TripsParamsInterface>, res: Response) => {
         const { origin, destination, sortBy } = req.query
 
         const tripClient = new ForTripClient()
@@ -27,13 +27,16 @@ app.get(
             tripValidator,
             logger,
         )
-        const trip = await tripConfigurator.getTrips(
+        const tripsResponse = await tripConfigurator.getTrips(
             origin,
             destination,
             sortBy,
         )
 
-        res.status(trip.status).send(trip.data)
+        res.status(tripsResponse.status).send({
+            data: tripsResponse.data,
+            message: tripsResponse.message,
+        })
     },
 )
 

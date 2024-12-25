@@ -1,4 +1,5 @@
 import { TripValidatorInterface } from './TripValidatorInterface'
+import { ValidationResult } from './ValidationResult'
 
 export class TripValidator implements TripValidatorInterface {
     private readonly VALID_SORT_STRATEGIES = ['fastest', 'cheapest']
@@ -16,21 +17,30 @@ export class TripValidator implements TripValidatorInterface {
         origin: string,
         destination: string,
         sortBy: string,
-    ): void {
+    ): ValidationResult {
         if (!this.validateIATACode(origin)) {
-            throw new Error(`Invalid origin IATA code: ${origin}`)
+            return {
+                isValid: false,
+                message: `Invalid origin IATA code: ${origin}`,
+            }
         }
 
         if (!this.validateIATACode(destination)) {
-            throw new Error(`Invalid destination IATA code: ${destination}`)
+            return {
+                isValid: false,
+                message: `Invalid destination IATA code: ${destination}`,
+            }
         }
 
         if (!this.validateSortStrategy(sortBy)) {
-            throw new Error(
-                `Invalid sort strategy: ${sortBy}. Must be one of: ${this.VALID_SORT_STRATEGIES.join(
+            return {
+                isValid: false,
+                message: `Invalid sort strategy: ${sortBy}. Must be one of: ${this.VALID_SORT_STRATEGIES.join(
                     ', ',
                 )}`,
-            )
+            }
         }
+
+        return { isValid: true}
     }
 }

@@ -1,3 +1,5 @@
+import { ValidationResult } from './ValidationResult'
+
 export interface TripValidatorInterface {
     validateIATACode(code: string): boolean
     validateSortStrategy(strategy: string): boolean
@@ -5,5 +7,5 @@ export interface TripValidatorInterface {
         origin: string,
         destination: string,
         sortBy: string,
-    ): void
+    ): ValidationResult
 }

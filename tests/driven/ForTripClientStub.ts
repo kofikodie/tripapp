@@ -7,7 +7,7 @@ export default class ForTripClientStub implements TripClientInterface {
         destination: string,
         sortBy: string,
     ): Promise<TripInterface> {
-        if (destination === 'ERR' || origin === 'ERR') {
+        if (destination === 'ERR' || origin === 'ERR' || sortBy === 'ERR') {
             return Promise.resolve({
                 success: false,
                 error: new Error('Not implemented'),

@@ -47,6 +47,7 @@ describe('TripConfigurator', () => {
 
             expect(result).toEqual({
                 status: 400,
+                message: 'Invalid origin IATA code: XX',
                 data: [],
             })
         })
@@ -61,6 +62,8 @@ describe('TripConfigurator', () => {
             expect(result).toEqual({
                 status: 400,
                 data: [],
+                message:
+                    'Invalid sort strategy: invalid. Must be one of: fastest, cheapest',
             })
         })
 
@@ -74,6 +77,7 @@ describe('TripConfigurator', () => {
             expect(result).toEqual({
                 status: 400,
                 data: [],
+                message: 'Invalid origin IATA code: ERROR',
             })
         })
 

@@ -3,7 +3,6 @@ import {
     TripClientInterface,
     TripClientResponseInterface,
 } from '../driven/ports/TripClientInterface'
-import { LoggerService } from '../utils/logger/LoggerService'
 import { BuildTripResponseInterface } from './builder/BuildTripResponseInterface'
 import { TripValidatorInterface } from './validator/TripValidatorInterface'
 import { LoggerInterface } from '../utils/logger/LoggerInterface'
@@ -33,27 +32,26 @@ export class TripConfigurator {
     ): Promise<{
         status: number
         data: TripClientResponseInterface[]
+        message?: string
     }> {
-        try {
-            this.tripValidator.validateTripRequest(origin, destination, sortBy)
-        } catch (error: unknown) {
+        const validationResult = this.tripValidator.validateTripRequest(
+            origin,
+            destination,
+            sortBy,
+        )
+
+        if (!validationResult.isValid) {
             this.logger.error(`Error validating trip request`, {
                 origin,
                 destination,
                 sortBy,
-                error:
-                    error instanceof Error
-                        ? {
-                              message: error.message,
-                              stack: error.stack,
-                              name: error.name,
-                          }
-                        : new Error(String(error)),
+                error: validationResult.message,
             })
 
             return {
                 status: 400,
                 data: [],
+                message: validationResult.message,
             }
         }
 
@@ -78,6 +76,7 @@ export class TripConfigurator {
             return {
                 status: 400,
                 data: [],
+                message: tripsResponse.error?.message,
             }
         }
 
