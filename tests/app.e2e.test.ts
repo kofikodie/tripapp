@@ -78,13 +78,13 @@ describe('E2E Test', () => {
                 type: 'flight',
             },
             {
-                cost: 1709,
+                cost: 4236,
                 destination: 'GRU',
-                display_name: 'from SYD to GRU by car',
-                duration: 32,
-                id: 'd1b89056-ae55-4040-bbd6-0373405705d4',
+                display_name: 'from SYD to GRU by train',
+                duration: 5,
+                id: 'd6bbe5e5-be4d-40d5-9125-cedb57508897',
                 origin: 'SYD',
-                type: 'car',
+                type: 'train',
             },
             {
                 cost: 2386,
@@ -105,13 +105,13 @@ describe('E2E Test', () => {
                 type: 'car',
             },
             {
-                cost: 4236,
+                cost: 1709,
                 destination: 'GRU',
-                display_name: 'from SYD to GRU by train',
-                duration: 5,
-                id: 'd6bbe5e5-be4d-40d5-9125-cedb57508897',
+                display_name: 'from SYD to GRU by car',
+                duration: 32,
+                id: 'd1b89056-ae55-4040-bbd6-0373405705d4',
                 origin: 'SYD',
-                type: 'train',
+                type: 'car',
             },
         ])
     })
