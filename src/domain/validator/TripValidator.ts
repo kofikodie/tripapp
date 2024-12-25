@@ -41,6 +41,6 @@ export class TripValidator implements TripValidatorInterface {
             }
         }
 
-        return { isValid: true}
+        return { isValid: true }
     }
 }

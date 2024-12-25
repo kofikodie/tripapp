@@ -1,4 +1,3 @@
-
 export interface TripClientInterface {
     getTrip(
         origin: string,

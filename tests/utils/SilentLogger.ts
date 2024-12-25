@@ -1,4 +1,4 @@
-import { LoggerInterface } from "../../src/utils/logger/LoggerInterface";
+import { LoggerInterface } from '../../src/utils/logger/LoggerInterface'
 
 export class SilentLogger implements LoggerInterface {
     public info(): void {}
@@ -8,4 +8,4 @@ export class SilentLogger implements LoggerInterface {
     public logApiRequest(): void {}
     public logAwsOperation(): void {}
     public logError(): void {}
-} 
+}

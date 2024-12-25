@@ -14,7 +14,10 @@ app.get('/health', (req: Request, res: Response) => {
 
 app.get(
     '/trips',
-    async (req: Request<unknown, unknown, unknown, TripsParamsInterface>, res: Response) => {
+    async (
+        req: Request<unknown, unknown, unknown, TripsParamsInterface>,
+        res: Response,
+    ) => {
         const { origin, destination, sortBy } = req.query
 
         const tripClient = new ForTripClient()

@@ -1,6 +1,5 @@
-import BuildTripResponse from "../../../src/domain/builder/BuildTripResponse"
-import { TripClientResponseInterface } from "../../../src/driven/ports/TripClientInterface"
-
+import BuildTripResponse from '../../../src/domain/builder/BuildTripResponse'
+import { TripClientResponseInterface } from '../../../src/driven/ports/TripClientInterface'
 
 describe('BuildTripResponse', () => {
     let builder: BuildTripResponse
