@@ -1,30 +1,14 @@
 import { TripConfigurator } from '../../src/domain/TripConfigurator'
-import { TripClientInterface } from '../../src/driven/ports/TripClientInterface'
-import BuildTripResponse from '../../src/domain/builder/BuildTripResponse'
 import { TripValidator } from '../../src/domain/validator/TripValidator'
-import ForTripClientStub from '../driven/ForTripClientStub'
+import ObtainingTripsAdapterStub from '../driven/adapters/ObtainingTripsAdapterStub'
 import { SilentLogger } from '../utils/SilentLogger'
 
 describe('TripConfigurator', () => {
-    let tripConfigurator: TripConfigurator
-    let tripClient: TripClientInterface
-    let buildTripResponse: BuildTripResponse
-    let tripValidator: TripValidator
-    let logger: SilentLogger
-
-    beforeEach(() => {
-        tripClient = new ForTripClientStub()
-        buildTripResponse = new BuildTripResponse()
-        tripValidator = new TripValidator()
-        logger = new SilentLogger()
-
-        tripConfigurator = new TripConfigurator(
-            tripClient,
-            buildTripResponse,
-            tripValidator,
-            logger,
-        )
-    })
+    const tripConfigurator = new TripConfigurator(
+        new ObtainingTripsAdapterStub(),
+        new TripValidator(),
+        new SilentLogger(),
+    )
 
     describe('getTrips', () => {
         it('should return trips successfully when all validations pass', async () => {
@@ -35,7 +19,7 @@ describe('TripConfigurator', () => {
             )
 
             expect(result.status).toBe(200)
-            expect(result.data).toHaveLength(5)
+            expect(result.data).toHaveLength(2)
         })
 
         it('should return error status when validation fails with invalid IATA code', async () => {
@@ -68,6 +52,7 @@ describe('TripConfigurator', () => {
         })
 
         it('should return error status when trip client fails', async () => {
+            //Passing an ERR as origin and destination will trigger an error in the trip client stub
             const result = await tripConfigurator.getTrips(
                 'ERR',
                 'LHR',
@@ -77,7 +62,7 @@ describe('TripConfigurator', () => {
             expect(result).toEqual({
                 status: 400,
                 data: [],
-                message: 'Error getting trips',
+                message: 'Error while fetching trips',
             })
         })
 
@@ -89,9 +74,8 @@ describe('TripConfigurator', () => {
             )
 
             expect(result.status).toBe(200)
-            expect(result.data[0].duration).toBe(5) // Flight and train both have duration 5
-            expect(result.data[1].duration).toBe(5)
-            expect(result.data[2].duration).toBe(7)
+            expect(result.data[0].duration).toBe(50)
+            expect(result.data[1].duration).toBe(100)
         })
 
         it('should sort trips by cost when sort strategy is cheapest', async () => {
@@ -102,9 +86,8 @@ describe('TripConfigurator', () => {
             )
 
             expect(result.status).toBe(200)
-            expect(result.data[0].cost).toBe(625) // Flight is cheapest
-            expect(result.data[1].cost).toBe(1709)
-            expect(result.data[2].cost).toBe(2386)
+            expect(result.data[0].cost).toBe(80)
+            expect(result.data[1].cost).toBe(160)
         })
     })
 })

@@ -1,9 +1,8 @@
 import express, { Request, Response } from 'express'
-import { TripsParamsInterface } from './driving/ports/TripsParamsInterface'
+import { TripsParamsInterface } from './driving/ports/ForConfiguringTripsParams.Interface'
 import { LoggerService } from './utils/logger/LoggerService'
-import ForTripClient from './driven/ForTripClient'
+import ObtainingTripsAdapter from './driven/adapters/ObtainingTripsAdapter'
 import { TripConfigurator } from './domain/TripConfigurator'
-import BuildTripResponse from './domain/builder/BuildTripResponse'
 import { TripValidator } from './domain/validator/TripValidator'
 
 const app = express()
@@ -20,13 +19,11 @@ app.get(
     ) => {
         const { origin, destination, sortBy } = req.query
 
-        const tripClient = new ForTripClient()
-        const buildTripResponse = new BuildTripResponse()
+        const tripClient = new ObtainingTripsAdapter()
         const logger = LoggerService.getInstance()
         const tripValidator = new TripValidator()
         const tripConfigurator = new TripConfigurator(
             tripClient,
-            buildTripResponse,
             tripValidator,
             logger,
         )

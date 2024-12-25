@@ -1,26 +1,22 @@
-import BuildTripResponse from './builder/BuildTripResponse'
 import {
-    TripClientInterface,
-    TripClientResponseInterface,
-} from '../driven/ports/TripClientInterface'
-import { BuildTripResponseInterface } from './builder/BuildTripResponseInterface'
+    ForObtainingTripsInterface,
+    ForObtainingTripsReturnInterface,
+    TripInterface,
+} from '../driven/ports/ForObtainingTrips.Interface'
 import { TripValidatorInterface } from './validator/TripValidatorInterface'
 import { LoggerInterface } from '../utils/logger/LoggerInterface'
 
 export class TripConfigurator {
-    private tripClient: TripClientInterface
-    private buildTripResponse: BuildTripResponseInterface
+    private forObtainingTrips: ForObtainingTripsInterface
     private tripValidator: TripValidatorInterface
     private logger: LoggerInterface
 
     constructor(
-        tripClient: TripClientInterface,
-        buildTripResponse: BuildTripResponse,
+        forObtainingTrips: ForObtainingTripsInterface,
         tripValidator: TripValidatorInterface,
         logger: LoggerInterface,
     ) {
-        this.tripClient = tripClient
-        this.buildTripResponse = buildTripResponse
+        this.forObtainingTrips = forObtainingTrips
         this.tripValidator = tripValidator
         this.logger = logger
     }
@@ -31,7 +27,7 @@ export class TripConfigurator {
         sortBy: string,
     ): Promise<{
         status: number
-        data: TripClientResponseInterface[]
+        data: TripInterface[]
         message?: string
     }> {
         const validationResult = this.tripValidator.validateTripRequest(
@@ -55,11 +51,19 @@ export class TripConfigurator {
             }
         }
 
-        const tripsResponse = await this.tripClient.getTrip(
-            origin,
-            destination,
-            sortBy,
-        )
+        let tripsResponse: ForObtainingTripsReturnInterface
+
+        if (sortBy === 'cheapest') {
+            tripsResponse = await this.forObtainingTrips.getCheapestTrip(
+                origin,
+                destination,
+            )
+        } else {
+            tripsResponse = await this.forObtainingTrips.getFastestTrip(
+                origin,
+                destination,
+            )
+        }
 
         if (!tripsResponse.success) {
             this.logger.error(`Error getting trips`, {
@@ -80,10 +84,9 @@ export class TripConfigurator {
             }
         }
 
-        const trip = this.buildTripResponse.build(tripsResponse.data, sortBy)
         return {
             status: 200,
-            data: trip,
+            data: tripsResponse.data,
         }
     }
 }
