@@ -40,7 +40,7 @@ describe('BuildTripResponse', () => {
     })
 
     it('should sort trips by cost when sortBy is "cheap"', () => {
-        const result = builder.build(mockTrips, 'cheap')
+        const result = builder.build(mockTrips, 'cheapest')
 
         expect(result).toEqual([
             {
@@ -74,7 +74,7 @@ describe('BuildTripResponse', () => {
     })
 
     it('should sort trips by duration when sortBy is not "cheap"', () => {
-        const result = builder.build(mockTrips, 'fast')
+        const result = builder.build(mockTrips, 'fastest')
 
         expect(result).toEqual([
             {

@@ -97,7 +97,6 @@ describe('TripConfigurator', () => {
                 'cheapest',
             )
 
-            console.log(result.data) 
             expect(result.status).toBe(200)
             expect(result.data[0].cost).toBe(625) // Flight is cheapest
             expect(result.data[1].cost).toBe(1709)
