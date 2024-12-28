@@ -3,6 +3,7 @@ import {
     ForObtainingTripsInterface,
     ForObtainingTripsReturnInterface,
     TripInterface,
+    TripResponseInterface,
 } from '../ports/ForObtainingTrips.Interface'
 import dotenv from 'dotenv'
 
@@ -33,11 +34,22 @@ export default class ObtainingTripsAdapter
     ): Promise<ForObtainingTripsReturnInterface> {
         try {
             const config = this.getConfig(origin, destination)
-            const response = await axios.request<TripInterface[]>(config)
+            const response =
+                await axios.request<TripResponseInterface[]>(config)
+
+            const trips = response.data.map(trip => ({
+                origin: trip.origin,
+                destination: trip.destination,
+                cost: trip.cost,
+                type: trip.type,
+                duration: trip.duration,
+                trip_id: trip.id,
+                display_name: trip.display_name,
+            }))
 
             return {
                 success: true,
-                data: response.data.sort(sortFn),
+                data: trips.sort(sortFn),
             }
         } catch (error) {
             const errorMessage =

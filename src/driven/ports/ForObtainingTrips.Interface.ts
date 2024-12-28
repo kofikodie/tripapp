@@ -25,3 +25,7 @@ export interface TripInterface {
     trip_id: string
     display_name: string
 }
+
+export interface TripResponseInterface extends Omit<TripInterface, 'trip_id'> {
+    id: string
+}

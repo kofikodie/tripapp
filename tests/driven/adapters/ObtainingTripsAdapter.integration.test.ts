@@ -1,5 +1,5 @@
 import nock from 'nock'
-import ObtainingTripsAdapter from '../../../src/driven/adapters/ObtainingTripsAdapter'
+import ObtainingTripsAdapter from '../../../src/driven/adapters/ForObtainingTripsAdapter'
 import dotenv from 'dotenv'
 
 dotenv.config()
@@ -89,7 +89,6 @@ describe('ObtainingTripsAdapter Integration', () => {
 
             expect(result.success).toBe(false)
             expect(result.error?.message).toContain('Missing API configuration')
-
         })
     })
 })

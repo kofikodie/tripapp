@@ -1,11 +1,17 @@
 import express, { Request, Response } from 'express'
-import { TripsParamsInterface } from './driving/ports/ForConfiguringTripsParams.Interface'
+import { ForTripsParamsInterface } from './driving/ports/ForConfiguringTripsParams.Interface'
 import { LoggerService } from './utils/logger/LoggerService'
-import ObtainingTripsAdapter from './driven/adapters/ObtainingTripsAdapter'
+import ObtainingTripsAdapter from './driven/adapters/ForObtainingTripsAdapter'
 import { TripConfigurator } from './domain/TripConfigurator'
 import { TripValidator } from './domain/validator/TripValidator'
+import { ForStoringTripsAdapter } from './driven/adapters/ForStoringTripsAdapter'
+import { TripInterface } from './driven/ports/ForObtainingTrips.Interface'
+import { TripStorageConfigurator } from './domain/TripStorageConfigurator'
+import { TripStoringValidator } from './domain/validator/TripStoringValidator'
 
 const app = express()
+
+app.use(express.json())
 
 app.get('/health', (req: Request, res: Response) => {
     res.send('OK')
@@ -14,7 +20,7 @@ app.get('/health', (req: Request, res: Response) => {
 app.get(
     '/trips',
     async (
-        req: Request<unknown, unknown, unknown, TripsParamsInterface>,
+        req: Request<unknown, unknown, unknown, ForTripsParamsInterface>,
         res: Response,
     ) => {
         const { origin, destination, sortBy } = req.query
@@ -37,6 +43,26 @@ app.get(
             data: tripsResponse.data,
             message: tripsResponse.message,
         })
+    },
+)
+
+app.post(
+    '/save/trip',
+    async (req: Request<unknown, unknown, TripInterface>, res: Response) => {
+        const trip: TripInterface = req.body
+
+        const tripStorageAdapter = ForStoringTripsAdapter.getInstance()
+        const logger = LoggerService.getInstance()
+        const tripStoringValidator = new TripStoringValidator()
+
+        const tripStorageConfigurator = new TripStorageConfigurator(
+            tripStorageAdapter,
+            tripStoringValidator,
+            logger,
+        )
+
+        const result = await tripStorageConfigurator.saveTrip(trip)
+        res.status(result.success ? 201 : 500).json(result)
     },
 )
 
