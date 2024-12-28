@@ -5,13 +5,27 @@ services:
         build:
             context: .
             dockerfile: .docker/node/Dockerfile
-        command: ["npm", "run", "start:dev"]
+        command: ['npm', 'run', 'start:dev']
         volumes:
             - ./:/app
             #- /app/node_modules
         ports:
-            - "8888:8888"
+            - '8888:8888'
         env_file:
             - .env
         environment:
             - NODE_ENV=development
+    mongo:
+        image: mongo:7
+        container_name: mongo
+        ports:
+            - '27017:27017'
+        volumes:
+            - .docker/mongo/data:/data/db
+        restart: unless-stopped
+        env_file:
+            - .env
+        environment:
+            - MONGO_INITDB_DATABASE=${MONGODB_DB}
+            - MONGO_INITDB_ROOT_USERNAME=${MONGODB_USER}
+            - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_PASSWORD}
