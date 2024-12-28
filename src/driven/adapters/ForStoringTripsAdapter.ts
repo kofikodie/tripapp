@@ -52,13 +52,14 @@ export class ForStoringTripsAdapter implements ForStoringTripsInterface {
             await this.connect()
             return await this.collection.find().toArray()
         } catch (error) {
-            console.error(
-                `Failed to retrieve trips: ${
-                    error instanceof Error
-                        ? error.message
-                        : 'Unknown error while retrieving trips'
-                }`,
-            )
+            console.error('Failed to retrieve trips:', {
+                error: {
+                    message:
+                        error instanceof Error
+                            ? error.message
+                            : 'Unknown error while retrieving trips',
+                },
+            })
             return []
         }
     }

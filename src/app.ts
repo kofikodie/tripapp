@@ -47,7 +47,7 @@ app.get(
 )
 
 app.post(
-    '/save/trip',
+    '/api/save/trip',
     async (req: Request<unknown, unknown, TripInterface>, res: Response) => {
         const trip: TripInterface = req.body
 
@@ -65,5 +65,11 @@ app.post(
         res.status(result.success ? 201 : 500).json(result)
     },
 )
+
+app.get('/api/trips', async (req: Request, res: Response) => {
+    const tripStorageAdapter = ForStoringTripsAdapter.getInstance()
+    const trips = await tripStorageAdapter.getTrips()
+    res.status(200).json(trips)
+})
 
 export default app

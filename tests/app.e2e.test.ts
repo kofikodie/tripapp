@@ -121,7 +121,7 @@ describe('E2E Test', () => {
     })
 
     it('should save a trip to the database', async () => {
-        const response = await request(app).post('/save/trip').send({
+        const response = await request(app).post('/api/save/trip').send({
             trip_id: 'a749c866-7928-4d08-9d5c-a6821a583d1a',
             origin: 'SYD',
             destination: 'GRU',
@@ -136,6 +136,28 @@ describe('E2E Test', () => {
             success: true,
             message: 'Trip saved successfully',
         })
+    })
+
+    it('should return all the saved trips', async () => {
+        //save a trip
+        await request(app).post('/api/save/trip').send({
+            trip_id: 'a749c866-7928-4d08-9d5c-a6821a583d1a',
+            origin: 'SYD',
+            destination: 'GRU',
+            cost: 625,
+            duration: 5,
+            type: 'flight',
+            display_name: 'from SYD to GRU by flight',
+        })
+
+        //get all the trips and check if the trip is there
+        const response = await request(app).get('/api/trips')
+        expect(response.status).toBe(200)
+        expect(response.body).toEqual([
+            {
+                trip_id: 'a749c866-7928-4d08-9d5c-a6821a583d1a',
+            },
+        ])
     })
 
     it('should return 400 when origin is not provided', async () => {
