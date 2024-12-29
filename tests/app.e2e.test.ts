@@ -167,9 +167,7 @@ describe('E2E Test', () => {
         expect(response.body[0].cost).toBe(625)
         expect(response.body[0].duration).toBe(5)
         expect(response.body[0].type).toBe('flight')
-        expect(response.body[0].display_name).toBe(
-            'from SYD to GRU by flight',
-        )
+        expect(response.body[0].display_name).toBe('from SYD to GRU by flight')
 
         const deleteResponse = await request(app).delete(
             '/api/trips/a749c866-7928-4d08-9d5c-a6821a583d1a',
@@ -192,7 +190,6 @@ describe('E2E Test', () => {
             display_name: 'from SYD to GRU by flight',
         })
 
-
         const response = await request(app).delete(
             '/api/trips/a749c866-7928-4d08-9d5c-a6821a583d1a',
         )
@@ -200,6 +197,20 @@ describe('E2E Test', () => {
         expect(response.body).toEqual({
             success: true,
             message: 'Trip deleted successfully',
+        })
+        const getResponse = await request(app).get('/api/trips')
+        expect(getResponse.status).toBe(200)
+        expect(getResponse.body.length).toBe(0)
+    })
+
+    it('should return 200 and a message when deleting a trip that does not exist', async () => {
+        const response = await request(app).delete(
+            '/api/trips/a749c866-7928-4d08-9d5c-a6821a583d1a',
+        )
+        expect(response.status).toBe(200)
+        expect(response.body).toEqual({
+            success: true,
+            message: 'Trip not found',
         })
     })
 

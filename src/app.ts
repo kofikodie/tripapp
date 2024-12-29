@@ -78,13 +78,6 @@ app.delete(
         const tripStorageAdapter = ForStoringTripsAdapter.getInstance()
         const trip_id = req.params.trip_id
 
-        if (!trip_id) {
-            res.status(400).json({
-                success: false,
-                message: 'Trip ID is required',
-            })
-        }
-
         const result = await tripStorageAdapter.deleteTrip(trip_id)
         res.status(result.success ? 200 : 500).json(result)
     },

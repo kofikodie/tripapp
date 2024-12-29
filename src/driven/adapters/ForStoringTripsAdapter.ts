@@ -68,8 +68,11 @@ export class ForStoringTripsAdapter implements ForStoringTripsInterface {
         trip_id: string,
     ): Promise<{ success: boolean; message: string }> {
         try {
-            await this.collection.deleteOne({ trip_id })
-            return { success: true, message: 'Trip deleted successfully' }
+            const result = await this.collection.deleteOne({ trip_id })
+            return {
+                success: true,
+                message: result.deletedCount === 1 ? 'Trip deleted successfully' : 'Trip not found',
+            }
         } catch (error) {
             return {
                 success: false,
