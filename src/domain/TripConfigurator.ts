@@ -27,7 +27,7 @@ export class TripConfigurator {
         sortBy: string,
     ): Promise<{
         status: number
-        data: TripInterface[]
+        data?: TripInterface[]
         message?: string
     }> {
         const validationResult = this.tripValidator.validateTripRequest(
@@ -46,7 +46,6 @@ export class TripConfigurator {
 
             return {
                 status: 400,
-                data: [],
                 message: validationResult.message,
             }
         }
