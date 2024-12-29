@@ -64,6 +64,27 @@ export class ForStoringTripsAdapter implements ForStoringTripsInterface {
         }
     }
 
+    async deleteTrip(
+        trip_id: string,
+    ): Promise<{ success: boolean; message: string }> {
+        try {
+            await this.collection.deleteOne({ trip_id })
+            return { success: true, message: 'Trip deleted successfully' }
+        } catch (error) {
+            return {
+                success: false,
+                message:
+                    error instanceof Error
+                        ? error.message
+                        : 'Unknown error while deleting trip',
+            }
+        }
+    }
+
+    async deleteAllTrips(): Promise<void> {
+        await this.collection.deleteMany({})
+    }
+
     async close(): Promise<void> {
         await this.client.close()
     }

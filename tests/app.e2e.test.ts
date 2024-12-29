@@ -1,11 +1,17 @@
 import app from '../src/app'
 import request from 'supertest'
+import { ForStoringTripsAdapter } from '../src/driven/adapters/ForStoringTripsAdapter'
 
 describe('E2E Test', () => {
     it('should return 200', async () => {
         const response = await request(app).get('/health')
         expect(response.status).toBe(200)
         expect(response.text).toBe('OK')
+    })
+
+    beforeEach(async () => {
+        const tripStorageAdapter = ForStoringTripsAdapter.getInstance()
+        await tripStorageAdapter.deleteAllTrips()
     })
 
     it('should return the cheapest trip by cost given origin, destination and a sortBy parameter', async () => {
@@ -139,7 +145,6 @@ describe('E2E Test', () => {
     })
 
     it('should return all the saved trips', async () => {
-        //save a trip
         await request(app).post('/api/save/trip').send({
             trip_id: 'a749c866-7928-4d08-9d5c-a6821a583d1a',
             origin: 'SYD',
@@ -150,14 +155,52 @@ describe('E2E Test', () => {
             display_name: 'from SYD to GRU by flight',
         })
 
-        //get all the trips and check if the trip is there
         const response = await request(app).get('/api/trips')
+
         expect(response.status).toBe(200)
-        expect(response.body).toEqual([
-            {
-                trip_id: 'a749c866-7928-4d08-9d5c-a6821a583d1a',
-            },
-        ])
+        expect(response.body.length).toBe(1)
+        expect(response.body[0].trip_id).toBe(
+            'a749c866-7928-4d08-9d5c-a6821a583d1a',
+        )
+        expect(response.body[0].origin).toBe('SYD')
+        expect(response.body[0].destination).toBe('GRU')
+        expect(response.body[0].cost).toBe(625)
+        expect(response.body[0].duration).toBe(5)
+        expect(response.body[0].type).toBe('flight')
+        expect(response.body[0].display_name).toBe(
+            'from SYD to GRU by flight',
+        )
+
+        const deleteResponse = await request(app).delete(
+            '/api/trips/a749c866-7928-4d08-9d5c-a6821a583d1a',
+        )
+        expect(deleteResponse.status).toBe(200)
+        expect(deleteResponse.body).toEqual({
+            success: true,
+            message: 'Trip deleted successfully',
+        })
+    })
+
+    it('should delete a trip from database given a trip_id', async () => {
+        await request(app).post('/api/save/trip').send({
+            trip_id: 'a749c866-7928-4d08-9d5c-a6821a583d1a',
+            origin: 'SYD',
+            destination: 'GRU',
+            cost: 625,
+            duration: 5,
+            type: 'flight',
+            display_name: 'from SYD to GRU by flight',
+        })
+
+
+        const response = await request(app).delete(
+            '/api/trips/a749c866-7928-4d08-9d5c-a6821a583d1a',
+        )
+        expect(response.status).toBe(200)
+        expect(response.body).toEqual({
+            success: true,
+            message: 'Trip deleted successfully',
+        })
     })
 
     it('should return 400 when origin is not provided', async () => {

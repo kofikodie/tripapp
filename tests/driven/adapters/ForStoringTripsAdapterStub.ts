@@ -4,6 +4,18 @@ import { ForStoringTripsInterface } from '../../../src/driven/ports/ForStoringTr
 export default class ForStoringTripsAdapterStub
     implements ForStoringTripsInterface
 {
+    async deleteAllTrips(): Promise<void> {
+        return
+    }
+
+    async deleteTrip(
+        trip_id: string,
+    ): Promise<{ success: boolean; message: string }> {
+        if (trip_id === 'ERR') {
+            return { success: false, message: 'Error while deleting trip' }
+        }
+        return { success: true, message: 'Trip deleted successfully' }
+    }
     async saveTrip(
         trip: TripInterface,
     ): Promise<{ success: boolean; message: string }> {

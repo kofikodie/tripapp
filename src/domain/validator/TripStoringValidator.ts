@@ -13,7 +13,6 @@ export class TripStoringValidator implements TripStoringValidatorInterface {
             }
         }
 
-        console.log('trip', trip.trip_id)
         if (!trip.trip_id) {
             return {
                 isValid: false,
