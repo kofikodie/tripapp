@@ -37,7 +37,6 @@ export class TripStorageConfigurator {
     }
 
     async getTrips(): Promise<TripInterface[]> {
-        // You can add additional business logic or filtering here
         return await this.storageAdapter.getTrips()
     }
 }

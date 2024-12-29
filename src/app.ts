@@ -47,7 +47,7 @@ app.get(
 )
 
 app.post(
-    '/api/save/trip',
+    '/save/trip',
     async (req: Request<unknown, unknown, TripInterface>, res: Response) => {
         const trip: TripInterface = req.body
 
@@ -66,14 +66,16 @@ app.post(
     },
 )
 
-app.get('/api/trips', async (req: Request, res: Response) => {
+app.get('/save/trips', async (req: Request, res: Response) => {
     const tripStorageAdapter = ForStoringTripsAdapter.getInstance()
     const trips = await tripStorageAdapter.getTrips()
-    res.status(200).json(trips)
+    res.status(200).json({
+        data: trips,
+    })
 })
 
 app.delete(
-    '/api/trips/:trip_id',
+    '/trip/:trip_id',
     async (req: Request<{ trip_id: string }>, res: Response) => {
         const tripStorageAdapter = ForStoringTripsAdapter.getInstance()
         const trip_id = req.params.trip_id

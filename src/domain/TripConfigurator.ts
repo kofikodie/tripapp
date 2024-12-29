@@ -78,7 +78,6 @@ export class TripConfigurator {
 
             return {
                 status: 400,
-                data: [],
                 message: tripsResponse.error?.message,
             }
         }

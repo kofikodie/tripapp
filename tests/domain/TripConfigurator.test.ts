@@ -32,7 +32,6 @@ describe('TripConfigurator', () => {
             expect(result).toEqual({
                 status: 400,
                 message: 'Invalid origin IATA code: XX',
-                data: [],
             })
         })
 
@@ -45,7 +44,6 @@ describe('TripConfigurator', () => {
 
             expect(result).toEqual({
                 status: 400,
-                data: [],
                 message:
                     'Invalid sort strategy: invalid. Must be one of: fastest, cheapest',
             })
@@ -61,7 +59,6 @@ describe('TripConfigurator', () => {
 
             expect(result).toEqual({
                 status: 400,
-                data: [],
                 message: 'Error while fetching trips',
             })
         })
@@ -74,8 +71,8 @@ describe('TripConfigurator', () => {
             )
 
             expect(result.status).toBe(200)
-            expect(result.data[0].duration).toBe(50)
-            expect(result.data[1].duration).toBe(100)
+            expect(result.data?.[0].duration).toBe(50)
+            expect(result.data?.[1].duration).toBe(100)
         })
 
         it('should sort trips by cost when sort strategy is cheapest', async () => {
@@ -86,8 +83,8 @@ describe('TripConfigurator', () => {
             )
 
             expect(result.status).toBe(200)
-            expect(result.data[0].cost).toBe(80)
-            expect(result.data[1].cost).toBe(160)
+            expect(result.data?.[0].cost).toBe(80)
+            expect(result.data?.[1].cost).toBe(160)
         })
     })
 })

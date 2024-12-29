@@ -127,7 +127,7 @@ describe('E2E Test', () => {
     })
 
     it('should save a trip to the database', async () => {
-        const response = await request(app).post('/api/save/trip').send({
+        const response = await request(app).post('/save/trip').send({
             trip_id: 'a749c866-7928-4d08-9d5c-a6821a583d1a',
             origin: 'SYD',
             destination: 'GRU',
@@ -145,7 +145,7 @@ describe('E2E Test', () => {
     })
 
     it('should return all the saved trips', async () => {
-        await request(app).post('/api/save/trip').send({
+        await request(app).post('/save/trip').send({
             trip_id: 'a749c866-7928-4d08-9d5c-a6821a583d1a',
             origin: 'SYD',
             destination: 'GRU',
@@ -155,22 +155,24 @@ describe('E2E Test', () => {
             display_name: 'from SYD to GRU by flight',
         })
 
-        const response = await request(app).get('/api/trips')
+        const response = await request(app).get('/save/trips')
 
         expect(response.status).toBe(200)
-        expect(response.body.length).toBe(1)
-        expect(response.body[0].trip_id).toBe(
+        expect(response.body.data.length).toBe(1)
+        expect(response.body.data[0].trip_id).toBe(
             'a749c866-7928-4d08-9d5c-a6821a583d1a',
         )
-        expect(response.body[0].origin).toBe('SYD')
-        expect(response.body[0].destination).toBe('GRU')
-        expect(response.body[0].cost).toBe(625)
-        expect(response.body[0].duration).toBe(5)
-        expect(response.body[0].type).toBe('flight')
-        expect(response.body[0].display_name).toBe('from SYD to GRU by flight')
+        expect(response.body.data[0].origin).toBe('SYD')
+        expect(response.body.data[0].destination).toBe('GRU')
+        expect(response.body.data[0].cost).toBe(625)
+        expect(response.body.data[0].duration).toBe(5)
+        expect(response.body.data[0].type).toBe('flight')
+        expect(response.body.data[0].display_name).toBe(
+            'from SYD to GRU by flight',
+        )
 
         const deleteResponse = await request(app).delete(
-            '/api/trips/a749c866-7928-4d08-9d5c-a6821a583d1a',
+            '/trip/a749c866-7928-4d08-9d5c-a6821a583d1a',
         )
         expect(deleteResponse.status).toBe(200)
         expect(deleteResponse.body).toEqual({
@@ -180,7 +182,7 @@ describe('E2E Test', () => {
     })
 
     it('should delete a trip from database given a trip_id', async () => {
-        await request(app).post('/api/save/trip').send({
+        await request(app).post('/save/trip').send({
             trip_id: 'a749c866-7928-4d08-9d5c-a6821a583d1a',
             origin: 'SYD',
             destination: 'GRU',
@@ -191,21 +193,21 @@ describe('E2E Test', () => {
         })
 
         const response = await request(app).delete(
-            '/api/trips/a749c866-7928-4d08-9d5c-a6821a583d1a',
+            '/trip/a749c866-7928-4d08-9d5c-a6821a583d1a',
         )
         expect(response.status).toBe(200)
         expect(response.body).toEqual({
             success: true,
             message: 'Trip deleted successfully',
         })
-        const getResponse = await request(app).get('/api/trips')
+        const getResponse = await request(app).get('/save/trips')
         expect(getResponse.status).toBe(200)
-        expect(getResponse.body.length).toBe(0)
+        expect(getResponse.body.data.length).toBe(0)
     })
 
     it('should return 200 and a message when deleting a trip that does not exist', async () => {
         const response = await request(app).delete(
-            '/api/trips/a749c866-7928-4d08-9d5c-a6821a583d1a',
+            '/trip/a749c866-7928-4d08-9d5c-a6821a583d1a',
         )
         expect(response.status).toBe(200)
         expect(response.body).toEqual({
