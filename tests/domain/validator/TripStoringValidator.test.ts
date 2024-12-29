@@ -18,10 +18,26 @@ describe('TripStoringValidator', () => {
         }
     })
 
-    describe('validateTrip', () => {
-        it('should return true for a valid trip', () => {
+    describe('validateTripRequest', () => {
+        it('should return true for a valid trip with supported IATA codes', () => {
             const result = validator.validateTripRequest(validTrip)
             expect(result.isValid).toBe(true)
+        })
+
+        it('should return false for unsupported origin IATA code', () => {
+            const trip = { ...validTrip, origin: 'ABC' }
+            const result = validator.validateTripRequest(trip)
+            expect(result.isValid).toBe(false)
+            expect(result.message).toBe('Unsupported origin IATA code: ABC')
+        })
+
+        it('should return false for unsupported destination IATA code', () => {
+            const trip = { ...validTrip, destination: 'XYZ' }
+            const result = validator.validateTripRequest(trip)
+            expect(result.isValid).toBe(false)
+            expect(result.message).toBe(
+                'Unsupported destination IATA code: XYZ',
+            )
         })
 
         it('should return false for a trip with an invalid trip_id', () => {

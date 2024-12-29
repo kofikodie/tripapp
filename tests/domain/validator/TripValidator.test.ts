@@ -7,21 +7,6 @@ describe('TripValidator', () => {
         validator = new TripValidator()
     })
 
-    describe('validateIATACode', () => {
-        it('should return true for valid IATA codes', () => {
-            expect(validator.validateIATACode('CDG')).toBe(true)
-            expect(validator.validateIATACode('JFK')).toBe(true)
-            expect(validator.validateIATACode('LHR')).toBe(true)
-        })
-
-        it('should return false for invalid IATA codes', () => {
-            expect(validator.validateIATACode('cd')).toBe(false)
-            expect(validator.validateIATACode('CDGG')).toBe(false)
-            expect(validator.validateIATACode('12G')).toBe(false)
-            expect(validator.validateIATACode('')).toBe(false)
-        })
-    })
-
     describe('validateSortStrategy', () => {
         it('should return true for valid sort strategies', () => {
             expect(validator.validateSortStrategy('fastest')).toBe(true)

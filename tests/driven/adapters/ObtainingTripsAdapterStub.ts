@@ -10,7 +10,7 @@ export default class ObtainingTripsAdapterStub
         origin: string,
         destination: string,
     ): Promise<ForObtainingTripsReturnInterface> {
-        if (origin === 'ERR' || destination === 'ERR') {
+        if (origin === 'LAX' || destination === 'LAX') {
             return {
                 success: false,
                 error: new Error('Error while fetching trips'),

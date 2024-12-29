@@ -52,10 +52,10 @@ describe('TripConfigurator', () => {
         })
 
         it('should return error status when trip client fails', async () => {
-            //Passing an ERR as origin and destination will trigger an error in the trip client stub
+            //Passing an LAX as origin and destination will trigger an error in the trip client stub
             const result = await tripConfigurator.getTrips(
-                'ERR',
-                'LHR',
+                'LAX',
+                'LAX',
                 'fastest',
             )
 

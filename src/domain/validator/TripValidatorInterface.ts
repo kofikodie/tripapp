@@ -1,7 +1,6 @@
 import { ValidationResult } from './ValidationResult'
 
 export interface TripValidatorInterface {
-    validateIATACode(code: string): boolean
     validateSortStrategy(strategy: string): boolean
     validateTripRequest(
         origin: string,

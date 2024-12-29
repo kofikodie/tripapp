@@ -1,6 +1,7 @@
 import { TripInterface } from '../../driven/ports/ForObtainingTrips.Interface'
 import { TripStoringValidatorInterface } from './TripStoringValidatorInterface'
 import { ValidationResult } from './ValidationResult'
+import { TRIP_CONSTANTS } from '../constants/TripConstants'
 
 export class TripStoringValidator implements TripStoringValidatorInterface {
     private readonly IATA_CODE_REGEX = /^[A-Z]{3}$/
@@ -27,10 +28,24 @@ export class TripStoringValidator implements TripStoringValidatorInterface {
             }
         }
 
+        if (!TRIP_CONSTANTS.SUPPORTED_IATA_CODES.includes(trip.origin)) {
+            return {
+                isValid: false,
+                message: `Unsupported origin IATA code: ${trip.origin}`,
+            }
+        }
+
         if (!trip.destination || !this.IATA_CODE_REGEX.test(trip.destination)) {
             return {
                 isValid: false,
                 message: `Invalid destination IATA code: ${trip.destination}`,
+            }
+        }
+
+        if (!TRIP_CONSTANTS.SUPPORTED_IATA_CODES.includes(trip.destination)) {
+            return {
+                isValid: false,
+                message: `Unsupported destination IATA code: ${trip.destination}`,
             }
         }
 
