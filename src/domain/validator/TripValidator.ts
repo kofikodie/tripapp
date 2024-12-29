@@ -3,12 +3,6 @@ import { TripValidatorInterface } from './TripValidatorInterface'
 import { ValidationResult } from './ValidationResult'
 
 export class TripValidator implements TripValidatorInterface {
-    private readonly VALID_SORT_STRATEGIES = ['fastest', 'cheapest']
-
-    validateSortStrategy(strategy: string): boolean {
-        return this.VALID_SORT_STRATEGIES.includes(strategy)
-    }
-
     validateTripRequest(
         origin: string,
         destination: string,
@@ -28,12 +22,12 @@ export class TripValidator implements TripValidatorInterface {
             }
         }
 
-        if (!this.validateSortStrategy(sortBy)) {
+        if (!Object.values(TRIP_CONSTANTS.SORT_STRATEGIES).includes(sortBy)) {
             return {
                 isValid: false,
-                message: `Invalid sort strategy: ${sortBy}. Must be one of: ${this.VALID_SORT_STRATEGIES.join(
-                    ', ',
-                )}`,
+                message: `Invalid sort strategy: ${sortBy}. Must be one of: ${Object.values(
+                    TRIP_CONSTANTS.SORT_STRATEGIES,
+                ).join(', ')}`,
             }
         }
 

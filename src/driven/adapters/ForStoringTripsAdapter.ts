@@ -25,11 +25,6 @@ export class ForStoringTripsAdapter implements ForStoringTripsInterface {
         return ForStoringTripsAdapter.instance
     }
 
-    async connect(): Promise<void> {
-        console.log('Connecting to MongoDB...')
-        await this.client.connect()
-    }
-
     async saveTrip(
         trip: TripInterface,
     ): Promise<{ success: boolean; message: string }> {
@@ -49,7 +44,6 @@ export class ForStoringTripsAdapter implements ForStoringTripsInterface {
 
     async getTrips(): Promise<TripInterface[]> {
         try {
-            await this.connect()
             return await this.collection.find().toArray()
         } catch (error) {
             console.error('Failed to retrieve trips:', {
@@ -71,7 +65,10 @@ export class ForStoringTripsAdapter implements ForStoringTripsInterface {
             const result = await this.collection.deleteOne({ trip_id })
             return {
                 success: true,
-                message: result.deletedCount === 1 ? 'Trip deleted successfully' : 'Trip not found',
+                message:
+                    result.deletedCount === 1
+                        ? 'Trip deleted successfully'
+                        : 'Trip not found',
             }
         } catch (error) {
             return {

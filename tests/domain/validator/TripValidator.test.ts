@@ -7,18 +7,6 @@ describe('TripValidator', () => {
         validator = new TripValidator()
     })
 
-    describe('validateSortStrategy', () => {
-        it('should return true for valid sort strategies', () => {
-            expect(validator.validateSortStrategy('fastest')).toBe(true)
-            expect(validator.validateSortStrategy('cheapest')).toBe(true)
-        })
-
-        it('should return false for invalid sort strategies', () => {
-            expect(validator.validateSortStrategy('invalid')).toBe(false)
-            expect(validator.validateSortStrategy('')).toBe(false)
-        })
-    })
-
     describe('validateTripRequest', () => {
         it('should return valid result for valid trip request', () => {
             const result = validator.validateTripRequest(
@@ -55,6 +43,21 @@ describe('TripValidator', () => {
                 isValid: false,
                 message:
                     'Invalid sort strategy: invalid. Must be one of: fastest, cheapest',
+            })
+        })
+
+        it('should return false for invalid sort strategies', () => {
+            expect(
+                validator.validateTripRequest('CDG', 'JFK', 'invalid'),
+            ).toEqual({
+                isValid: false,
+                message:
+                    'Invalid sort strategy: invalid. Must be one of: fastest, cheapest',
+            })
+            expect(validator.validateTripRequest('CDG', 'JFK', '')).toEqual({
+                isValid: false,
+                message:
+                    'Invalid sort strategy: . Must be one of: fastest, cheapest',
             })
         })
     })

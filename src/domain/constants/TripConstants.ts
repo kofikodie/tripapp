@@ -51,4 +51,8 @@ export const TRIP_CONSTANTS = {
         'HEL',
         'VIE',
     ],
+    SORT_STRATEGIES: {
+        FASTEST: 'fastest',
+        CHEAPEST: 'cheapest',
+    },
 }
