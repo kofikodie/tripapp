@@ -1,0 +1,109 @@
+{
+	"info": {
+		"_postman_id": "d4baf514-c36c-4964-a17c-25bfd0c80e70",
+		"name": "Bizaway",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11119515"
+	},
+	"item": [
+		{
+			"name": "get_trips",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8888/trips?origin=BKK&destination=LAX&sortBy=cheapest",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"trips"
+					],
+					"query": [
+						{
+							"key": "origin",
+							"value": "BKK"
+						},
+						{
+							"key": "destination",
+							"value": "LAX"
+						},
+						{
+							"key": "sortBy",
+							"value": "cheapest"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "save_trip",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"origin\": \"BKK\",\n    \"destination\": \"LAX\",\n    \"cost\": 5028,\n    \"type\": \"flight\",\n    \"duration\": 10,\n    \"trip_id\": \"d8043b80-db5b-4031-bfad-ced59bbd057f\",\n    \"display_name\": \"from BKK to LAX by flight\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8888/save/trip",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"save",
+						"trip"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete_trip",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8888/trip/d8043b80-db5b-4031-bfad-ced59bbd057f",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"trip",
+						"d8043b80-db5b-4031-bfad-ced59bbd057f"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_all_trips",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8888/save/trips/",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"save",
+						"trips",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

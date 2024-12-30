@@ -28,7 +28,7 @@ docker compose build
 2. Install dependencies:
 
 ```bash
-docker compose exec app npm install
+docker compose run --rm app npm install
 ```
 
 ## Docker Environment
@@ -41,6 +41,20 @@ The application runs in two containers:
 ## Development
 
 The application uses Docker volumes for development, enabling hot reload when you change the source code.
+
+## Manual Testing with Postman
+
+A Postman collection is provided for manual testing of the API endpoints:
+
+1. Import the collection from `postman/Bizaway.postman_collection.json`
+
+The collection includes requests for:
+
+- Health check
+- Search trips (with different sort strategies)
+- Save trip
+- List saved trips
+- Delete trip
 
 ### Development Commands
 
