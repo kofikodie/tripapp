@@ -1,12 +1,19 @@
-# Stage 1: Install dependencies and build the app
-FROM node:22-alpine3.19 AS build
+# Use Node.js Alpine-based image
+FROM node:22-alpine3.19
 
+# Set working directory
 WORKDIR /app
+# Copy package files
+COPY package*.json ./
 
-#COPY package*.json ./
+# Install dependencies
+RUN npm install
 
-#RUN npm install
-
+# Copy application files
 COPY . .
 
-#RUN npm run build
+# Expose port
+EXPOSE 8888
+
+# Start the application with hot reload
+CMD ["npm", "run", "start:dev"] 

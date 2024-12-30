@@ -5,7 +5,6 @@ services:
         build:
             context: .
             dockerfile: .docker/node/Dockerfile
-        command: ['npm', 'run', 'start:dev']
         volumes:
             - ./:/app
             #- /app/node_modules
@@ -15,6 +14,10 @@ services:
             - .env
         environment:
             - NODE_ENV=development
+        depends_on:
+            - mongo
+        restart: unless-stopped
+
     mongo:
         image: mongo:7
         container_name: mongo
